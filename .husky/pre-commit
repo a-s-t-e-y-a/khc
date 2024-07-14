@@ -3,4 +3,5 @@
 
 npm run test
 npm run lint
+npx prisma format
 npm run format
