@@ -28,7 +28,7 @@ const logger = createLogger({
         return warnFormat.transform(info);
       }
       return customFormat.transform(info);
-    })()
+    })(),
   ),
   transports: [
     new transports.Console({ format: colorize() }),
