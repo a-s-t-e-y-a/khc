@@ -37,9 +37,15 @@ model Subject {
 model Level {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
   Student Student[]
+  name    String
+
+  Curriculum Curriculum[]
 }
 
 model Curriculum {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  levelId String    @db.ObjectId
+  level   Level     @relation(fields: [levelId], references: [id])
   student Student[]
 }
