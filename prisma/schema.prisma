@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {
@@ -13,24 +14,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student {
-  id           String     @id @default(cuid()) @map("_id") @db.ObjectId
-  email        String
-  mobile       String
-  studentName  String
-  password     String
-  ip           String
-  curriculumId String     @db.ObjectId
-  subjectId    String     @db.ObjectId
-  levelId      String     @db.ObjectId
-  curriculum   Curriculum @relation(fields: [curriculumId], references: [id])
-  level        Level      @relation(fields: [levelId], references: [id])
-  subject      Subject    @relation(fields: [subjectId], references: [id])
-}
-
 model Subject {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  Student Student[]
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  Student    Student[]
+  assignment assignment[]
+  Teacher    Teacher[]
+  UptoGrade  UptoGrade[]
 }
 
 model Level {
@@ -39,12 +28,34 @@ model Level {
   name    String
 
   Curriculum Curriculum[]
+  assignment assignment[]
+  Teacher    Teacher[]
 }
 
 model Curriculum {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  levelId String    @db.ObjectId
-  level   Level     @relation(fields: [levelId], references: [id])
-  student Student[]
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  levelId    String       @db.ObjectId
+  level      Level        @relation(fields: [levelId], references: [id])
+  student    Student[]
+  assignment assignment[]
+  Teacher    Teacher[]
+}
+
+model assignment {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  teacherId     String      @db.ObjectId
+  teacher       Teacher     @relation(fields: [teacherId], references: [id])
+  studentId     String      @db.ObjectId
+  student       Student     @relation(fields: [studentId], references: [id])
+  assign        Boolean
+  createdDate   DateTime
+  displayNameId String      @db.ObjectId
+  displayName   DisplayName @relation(fields: [displayNameId], references: [id])
+  levelId       String      @db.ObjectId
+  level         Level       @relation(fields: [levelId], references: [id])
+  curriculumId  String      @db.ObjectId
+  curriculum    Curriculum  @relation(fields: [curriculumId], references: [id])
+  subjectid     String      @db.ObjectId
+  subject       Subject     @relation(fields: [subjectid], references: [id])
 }

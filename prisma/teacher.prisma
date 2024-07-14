@@ -1,0 +1,40 @@
+model Teacher {
+    id                  String       @id @default(auto()) @map("_id") @db.ObjectId
+    email               String
+    fullName            String
+    password            String
+    mobile              String
+    subjectId           String       @db.ObjectId
+    subject             Subject      @relation(fields: [subjectId], references: [id])
+    validId             String
+    higherQualification String
+    timingId            String       @db.ObjectId
+    timing              Timings      @relation(fields: [timingId], references: [id])
+    displayNameId       String       @db.ObjectId
+    displayName         DisplayName  @relation(fields: [displayNameId], references: [id])
+    curriculumId        String       @db.ObjectId
+    curriculum          Curriculum   @relation(fields: [curriculumId], references: [id])
+    levelId             String       @db.ObjectId
+    level               Level        @relation(fields: [levelId], references: [id])
+    assignment          assignment[]
+}
+
+model Timings {
+    id      String    @id @default(auto()) @map("_id") @db.ObjectId
+    day     String
+    from    String
+    to      String
+    Teacher Teacher[]
+}
+
+model DisplayName {
+    id         String       @id @default(auto()) @map("_id") @db.ObjectId
+    assignment assignment[]
+    Teacher    Teacher[]
+}
+
+model UptoGrade {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId
+    subjectid String  @db.ObjectId
+    subject   Subject @relation(fields: [subjectid], references: [id])
+}

@@ -1,0 +1,15 @@
+model Student {
+  id           String       @id @default(cuid()) @map("_id") @db.ObjectId
+  email        String
+  mobile       String
+  studentName  String
+  password     String
+  ip           String
+  curriculumId String       @db.ObjectId
+  subjectId    String       @db.ObjectId
+  levelId      String       @db.ObjectId
+  curriculum   Curriculum   @relation(fields: [curriculumId], references: [id])
+  level        Level        @relation(fields: [levelId], references: [id])
+  subject      Subject      @relation(fields: [subjectId], references: [id])
+  assignment   assignment[]
+}
